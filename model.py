@@ -25,3 +25,47 @@ def load_text_directory(directory):
 
     return out
 
+# Step 3 - extract_text_from_html
+from html.parser import HTMLParser
+import re
+
+
+class _VisibleTextParser(HTMLParser):
+    BLOCK_TAGS = {
+        "address", "article", "blockquote", "br", "dd", "div", "dl",
+        "dt", "footer", "h1", "h2", "h3", "h4", "h5", "h6", "header",
+        "hr", "li", "main", "ol", "p", "section", "table", "td", "th",
+        "tr", "ul",
+    }
+
+    def __init__(self):
+        super().__init__(convert_charrefs=True)
+        self.parts = []
+        self.hidden_tags = []
+
+    def handle_starttag(self, tag, attrs):
+        if tag in {"script", "style"}:
+            self.hidden_tags.append(tag)
+        elif not self.hidden_tags and tag in self.BLOCK_TAGS:
+            self.parts.append("")
+
+    def handle_endtag(self, tag):
+        if tag in self.hidden_tags:
+            # Remove the matching hidden tag and any malformed nested entries.
+            index = len(self.hidden_tags) - 1 - self.hidden_tags[::-1].index(tag)
+            del self.hidden_tags[index:]
+        elif not self.hidden_tags and tag in self.BLOCK_TAGS:
+            self.parts.append("")
+
+    def handle_data(self, data):
+        if not self.hidden_tags:
+            self.parts.append(data)
+
+
+def extract_text_from_html(html):
+    """Return visible text from an HTML string, with entities decoded."""
+    parser = _VisibleTextParser()
+    parser.feed(html)
+    parser.close()
+    return re.sub(r"\s+", " ", "".join(parser.parts)).strip()
+
