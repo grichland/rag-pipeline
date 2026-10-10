@@ -198,6 +198,17 @@ def embed_text(model, text):
     # TODO: Return a 1D float32 numpy embedding vector for the given text string.
     return model.encode(text)
 
+# Step 13 - embed_chunks
+import numpy as np
+def embed_chunks(model, chunks, batch_size=32):
+    """Batch-embed a list of chunk strings or chunk dicts into a 2D float32 matrix."""
+    # TODO: normalize chunk inputs to strings, encode in batches, return (n, d) float32 array
+    if not chunks:
+        return np.empty((0,model.get_embedding_dimension())).astype(np.float32)
+    if isinstance(chunks[0],dict):
+        chunks = [x['text'] for x in chunks]
+    return model.encode(chunks, batch_size=batch_size)
+
 # Step 16 - cosine_similarity_search
 import numpy as np
 
