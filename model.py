@@ -105,3 +105,14 @@ def chunk_fixed_size(text, chunk_size):
     
     return out
 
+# Step 16 - cosine_similarity_search
+import numpy as np
+
+def cosine_similarity_search(query_vector, chunk_matrix):
+    """Cosine similarity between query_vector (d,) and each row of chunk_matrix (n,d)."""
+    # TODO: compute cosine similarity between the query vector and every chunk row
+    l2_q = np.linalg.norm(query_vector)
+    l2_c = np.linalg.norm(chunk_matrix,axis=1)
+
+    return chunk_matrix @ query_vector / (l2_q * l2_c)
+
