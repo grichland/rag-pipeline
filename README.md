@@ -18,6 +18,7 @@ python scaffold.py
 - [x] **6.** chunk_fixed_size
 - [x] **7.** chunk_by_tokens
 - [x] **16.** cosine_similarity_search
+- [x] **17.** top_k_indices
 
 ---
 
