@@ -185,6 +185,14 @@ def attach_chunk_metadata(chunks, source):
         out.append(d)
     return out
 
+# Step 11 - load_embedding_model
+from sentence_transformers import SentenceTransformer
+
+def load_embedding_model(model_name):
+    # Load a pretrained model
+    model = SentenceTransformer(model_name)
+    return model
+
 # Step 16 - cosine_similarity_search
 import numpy as np
 

@@ -20,6 +20,7 @@ python scaffold.py
 - [x] **8.** chunk_by_sentences
 - [x] **9.** chunk_with_overlap
 - [x] **10.** attach_chunk_metadata
+- [x] **11.** load_embedding_model
 - [x] **16.** cosine_similarity_search
 - [x] **17.** top_k_indices
 - [x] **18.** top_k_chunks
