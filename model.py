@@ -151,6 +151,24 @@ def chunk_by_sentences(text, max_chars):
 
     return chunks
 
+# Step 9 - chunk_with_overlap
+def chunk_with_overlap(text, chunk_size, overlap):
+    # TODO: return sliding-window chunks of length chunk_size sharing `overlap` chars
+    
+    i = 0
+    n = len(text)
+    out = []
+    while i < n:
+        out.append(
+            text[
+                (i):(i+chunk_size)
+            ]
+        )
+
+        i += (chunk_size - overlap)
+    
+    return out
+
 # Step 16 - cosine_similarity_search
 import numpy as np
 
