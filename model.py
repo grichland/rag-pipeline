@@ -219,6 +219,34 @@ def l2_normalize(matrix):
     matrix[nonzero_rows,:] = matrix[nonzero_rows,:] / norms[nonzero_rows].reshape(-1,1)
     return matrix
 
+# Step 15 - save_corpus
+import json
+from pathlib import Path
+
+import numpy as np
+
+
+def save_corpus(embeddings, chunks, directory):
+    directory = Path(directory)
+    directory.mkdir(parents=True, exist_ok=True)
+
+    embeddings_path = directory / "embeddings.npy"
+    chunks_path = directory / "chunks.json"
+
+    np.save(embeddings_path, np.asarray(embeddings))
+
+    with chunks_path.open("w", encoding="utf-8") as f:
+        json.dump(chunks, f, ensure_ascii=False)
+
+    reloaded_embeddings = np.load(embeddings_path)
+    with chunks_path.open("r", encoding="utf-8") as f:
+        reloaded_chunks = json.load(f)
+
+    out = {}
+    out['embeddings'] = reloaded_embeddings
+    out['chunks'] = reloaded_chunks
+    return out
+
 # Step 16 - cosine_similarity_search
 import numpy as np
 
