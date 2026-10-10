@@ -17,6 +17,7 @@ python scaffold.py
 - [x] **5.** make_document
 - [x] **6.** chunk_fixed_size
 - [x] **7.** chunk_by_tokens
+- [x] **8.** chunk_by_sentences
 - [x] **16.** cosine_similarity_search
 - [x] **17.** top_k_indices
 - [x] **18.** top_k_chunks

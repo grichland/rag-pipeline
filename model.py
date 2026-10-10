@@ -119,6 +119,38 @@ def chunk_by_tokens(text, tokenizer, max_tokens):
         out.append(decoded_chunk)
     return out
 
+# Step 8 - chunk_by_sentences
+import re
+
+def chunk_by_sentences(text, max_chars):
+    if max_chars <= 0:
+        raise ValueError("max_chars must be positive")
+    if not text or not text.strip():
+        return []
+
+    sentences = [
+        s.strip()
+        for s in re.split(r"(?<=[.!?])\s+", text.strip())
+        if s.strip()
+    ]
+
+    chunks = []
+    current = ""
+
+    for sentence in sentences:
+        candidate = f"{current} {sentence}".strip()
+
+        if current and len(candidate) > max_chars:
+            chunks.append(current)
+            current = sentence
+        else:
+            current = candidate
+
+    if current:
+        chunks.append(current)
+
+    return chunks
+
 # Step 16 - cosine_similarity_search
 import numpy as np
 
