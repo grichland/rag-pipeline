@@ -209,6 +209,16 @@ def embed_chunks(model, chunks, batch_size=32):
         chunks = [x['text'] for x in chunks]
     return model.encode(chunks, batch_size=batch_size)
 
+# Step 14 - l2_normalize
+import numpy as np
+
+def l2_normalize(matrix):
+    # TODO: rescale each row of `matrix` to unit L2 norm, leaving all-zero rows unchanged.
+    norms = np.linalg.norm(matrix, axis=1)
+    nonzero_rows = norms!=0
+    matrix[nonzero_rows,:] = matrix[nonzero_rows,:] / norms[nonzero_rows].reshape(-1,1)
+    return matrix
+
 # Step 16 - cosine_similarity_search
 import numpy as np
 

@@ -23,6 +23,7 @@ python scaffold.py
 - [x] **11.** load_embedding_model
 - [x] **12.** embed_text
 - [x] **13.** embed_chunks
+- [x] **14.** l2_normalize
 - [x] **16.** cosine_similarity_search
 - [x] **17.** top_k_indices
 - [x] **18.** top_k_chunks
