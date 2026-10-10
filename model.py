@@ -169,6 +169,22 @@ def chunk_with_overlap(text, chunk_size, overlap):
     
     return out
 
+# Step 10 - attach_chunk_metadata
+def attach_chunk_metadata(chunks, source):
+    # TODO: wrap each chunk string with source, position, and chunk_id metadata.
+    
+    out = []
+
+    for i,chunk in enumerate(chunks):
+        d = {
+            "text": chunk,
+            "source": source,
+            "position": i,
+            "chunk_id": f"{source}::{i}"
+        }
+        out.append(d)
+    return out
+
 # Step 16 - cosine_similarity_search
 import numpy as np
 
