@@ -281,3 +281,16 @@ def top_k_chunks(scores, chunks, k):
         )
     return out
 
+# Step 19 - retrieve
+def retrieve(query, model, chunk_matrix, chunks, k):
+     
+    # TODO: embed the query, 
+    emb_q = embed_text(model,query) 
+
+    # TODO: score it against chunk_matrix, 
+    scores = cosine_similarity_search(emb_q,chunk_matrix)
+
+
+    # TODO: return top-k (chunk, score) pairs.
+    return top_k_chunks(scores,chunks,k)
+
