@@ -193,6 +193,11 @@ def load_embedding_model(model_name):
     model = SentenceTransformer(model_name)
     return model
 
+# Step 12 - embed_text
+def embed_text(model, text):
+    # TODO: Return a 1D float32 numpy embedding vector for the given text string.
+    return model.encode(text)
+
 # Step 16 - cosine_similarity_search
 import numpy as np
 
