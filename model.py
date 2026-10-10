@@ -105,6 +105,20 @@ def chunk_fixed_size(text, chunk_size):
     
     return out
 
+# Step 7 - chunk_by_tokens
+def chunk_by_tokens(text, tokenizer, max_tokens):
+    # TODO: split text into chunks of at most max_tokens token ids using the tokenizer
+    encoded = tokenizer.encode(text)
+    N_tokens = len(encoded)
+    out = []
+
+    for start in range(0 , N_tokens, max_tokens):
+
+        encoded_chunk = encoded[start:start+max_tokens]
+        decoded_chunk = tokenizer.decode(encoded_chunk)
+        out.append(decoded_chunk)
+    return out
+
 # Step 16 - cosine_similarity_search
 import numpy as np
 
