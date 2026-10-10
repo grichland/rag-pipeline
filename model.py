@@ -302,3 +302,25 @@ def build_faiss_index(chunk_matrix):
     fidx.add(chunk_matrix.astype(np.float32))
     return fidx
 
+# Step 21 - faiss_search
+import numpy as np
+
+def faiss_search(index, query_vector, k):
+    """Return top-k (scores, indices) as 1D arrays."""
+    query_vector = np.array(
+        query_vector, dtype=np.float32, order="C", copy=True
+    ).reshape(1, -1)
+
+    faiss.normalize_L2(query_vector)
+
+    if index.ntotal == 0 or k <= 0:
+        return np.empty(0, dtype=np.float32), np.empty(0, dtype=np.int64)
+
+    scores, indices = index.search(query_vector, index.ntotal)
+    scores, indices = scores[0], indices[0]
+
+    # Highest score first; lowest ID breaks ties.
+    order = np.lexsort((indices, -scores))[:min(k, index.ntotal)]
+
+    return scores[order], indices[order]
+
