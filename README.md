@@ -34,6 +34,7 @@ python scaffold.py
 - [x] **22.** compare_faiss_to_numpy
 - [x] **34.** hyde_retrieve
 - [x] **35.** reciprocal_rank_fusion
+- [x] **36.** bm25_search
 
 ---
 

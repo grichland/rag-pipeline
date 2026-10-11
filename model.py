@@ -348,3 +348,51 @@ def reciprocal_rank_fusion(ranked_lists, k=60):
     out = sorted(out.items(), reverse=True, key = lambda a: a[1])
     return out
 
+# Step 36 - bm25_search
+from collections import Counter 
+import numpy as np
+
+def bm25_search(query, chunks, k=5, k1=1.5, b=0.75):
+    # TODO: score chunks against the query with BM25 and return top-k (index, score) pairs
+
+    terms = list(dict.fromkeys(query.lower().split()))
+    docs = [chunk["text"].lower().split() for chunk in chunks]
+
+    n_docs = len(docs)
+    n_terms = len(terms)
+
+    if n_docs == 0 or k <= 0:
+        return []
+
+    C = np.zeros((n_docs, n_terms), dtype=np.float64)
+    doc_lengths = np.array([len(doc) for doc in docs], dtype=np.float64)
+
+    for i, doc in enumerate(docs):
+        counts = Counter(doc)
+        for j, term in enumerate(terms):
+            C[i, j] = counts[term]
+
+    # Number of documents containing each query term.
+    df = (C > 0).sum(axis=0)
+
+    idf = np.log1p(
+        (n_docs - df + 0.5) / (df + 0.5)
+    )
+
+
+    avg_doc_len = np.mean(doc_lengths)
+
+    len_factor = (1 - b + b * doc_lengths/avg_doc_len)
+
+    term_scores = idf * (
+        (C * (k1+1)) / (C + k1*len_factor[:,None])
+    )
+    
+    scores = term_scores.sum(axis=1)
+
+    matching = np.flatnonzero(scores > 0)
+    order = np.lexsort((matching, -scores[matching]))
+    top = matching[order[:k]]
+
+    return [(int(i), float(scores[i])) for i in top]
+
