@@ -396,3 +396,36 @@ def bm25_search(query, chunks, k=5, k1=1.5, b=0.75):
 
     return [(int(i), float(scores[i])) for i in top]
 
+# Step 37 - hybrid_search
+import numpy as np
+def hybrid_search(query, chunks, embeddings, embed_model, alpha=0.5, k=5):
+    n = len(chunks)
+    if n == 0 or k <= 0:
+        return []
+
+    query_vector = embed_model.encode(query)
+    dense_scores = np.asarray(
+        cosine_similarity_search(query_vector, embeddings),
+        dtype=float,
+    ).reshape(-1)
+
+    # Keep scores aligned with their original chunk indices.
+    bm25_scores = np.zeros(n, dtype=float)
+    for idx, score in bm25_search(query, chunks, k=n):
+        bm25_scores[idx] = score
+
+    def normalize(scores):
+        span = scores.max() - scores.min()
+        if span == 0:
+            return np.zeros_like(scores)
+        return (scores - scores.min()) / span
+
+    dense_scores = normalize(dense_scores)
+    bm25_scores = normalize(bm25_scores)
+
+    combined = alpha * dense_scores + (1 - alpha) * bm25_scores
+
+    order = np.argsort(-combined, kind="stable")[:k]
+
+    return [(int(i), float(combined[i])) for i in order]
+
