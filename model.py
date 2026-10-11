@@ -324,3 +324,14 @@ def faiss_search(index, query_vector, k):
 
     return scores[order], indices[order]
 
+# Step 22 - compare_faiss_to_numpy
+def compare_faiss_to_numpy(query_vector, chunk_matrix, index, k):
+    # TODO: return True iff FAISS and numpy cosine search agree on the top-k indices
+    return faiss_search(index,query_vector,k)
+
+# Step 34 - hyde_retrieve
+def hyde_retrieve(query, hypothetical_answer, chunks, embeddings, embed_model, k=5):
+    # TODO: embed the hypothetical answer and return the top-k chunks by cosine similarity.
+    out = retrieve(hypothetical_answer,embed_model,embeddings,chunks,k)
+    return [x[0] for x in out]
+
