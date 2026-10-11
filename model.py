@@ -335,3 +335,16 @@ def hyde_retrieve(query, hypothetical_answer, chunks, embeddings, embed_model, k
     out = retrieve(hypothetical_answer,embed_model,embeddings,chunks,k)
     return [x[0] for x in out]
 
+# Step 35 - reciprocal_rank_fusion
+def reciprocal_rank_fusion(ranked_lists, k=60):
+    # TODO: merge ranked lists of ids into one (id, score) list sorted by fused score.
+    out = {}
+    for cur_list in ranked_lists:
+        for i in range(len(cur_list)):
+            rank = i + 1
+            chunk_id = cur_list[i]
+            out[chunk_id] = out.get(chunk_id,0) + (1 / (rank + k))
+    
+    out = sorted(out.items(), reverse=True, key = lambda a: a[1])
+    return out
+
